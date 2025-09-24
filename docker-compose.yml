@@ -14,7 +14,9 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    restart: always
     volumes:
       - ./documents:/app/documents
     # Health check untuk memastikan aplikasi sudah siap

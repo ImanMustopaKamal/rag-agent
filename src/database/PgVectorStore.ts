@@ -6,7 +6,10 @@ export class PgVectorStore implements IVectorStore {
   private store: PostgresStore;
 
   constructor(connectionString: string) {
-    this.vectorStore = new PgVector({ connectionString });
+    this.vectorStore = new PgVector({
+      connectionString,
+      // schemaName: "pgVector"
+    });
     this.store = new PostgresStore({ connectionString });
   }
 

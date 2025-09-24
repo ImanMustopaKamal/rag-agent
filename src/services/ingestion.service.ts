@@ -14,21 +14,30 @@ export class IngestionService {
 
       const chunks = await docs.chunk({
         strategy: "markdown",
-        maxSize: 256,
-        overlap: 50,
+        headers: [
+          ["#", "title"],
+          ["##", "section"],
+        ],
+        extract: {
+          summary: true, // Extract summaries with default settings
+          keywords: true, // Extract keywords with default settings
+        },
       });
+
+      logger.info("chuks: ", JSON.stringify(chunks));
 
       const { embeddings } = await embedMany({
         model: openai.embedding("text-embedding-3-small"),
         values: chunks.map((chunk) => chunk.text),
       });
 
-      const result = await this.ingestionRepository.upsert(
-        "embeddings",
-        embeddings
-      );
+      logger.info("embeddings: ", JSON.stringify(embeddings));
 
-      logger.info(JSON.stringify(result));
+      const result = await this.ingestionRepository.upsert(
+        "documents",
+        embeddings,
+        chunks.map((chunk) => ({ text: chunk.text }))
+      );
 
       return result;
     } catch (error: any) {

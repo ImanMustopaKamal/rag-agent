@@ -9,6 +9,7 @@ import { embedMany } from "ai";
 import { vectorStore } from "../configs/database.config";
 import { ingestionController } from "../controllers/ingestion.controller";
 import { upload } from "../middlewares/file.middleware";
+import { agentController } from "../controllers/agent.controller";
 
 // import { query } from "../database/connection";
 // import { queryAgent } from "../agent/mastra-agent";
@@ -18,23 +19,25 @@ const router = express.Router();
 
 router.get("/ingestion", ingestionController.get);
 router.post("/ingestion", upload.single("file"), ingestionController.store);
-// router.get("/weather", async (req: Request, res: Response) => {
-//   const { city } = req.query as { city?: string };
 
-//   if (!city) {
-//     return res.status(400).send("Missing 'city' query parameter");
-//   }
+// router.post("/chat", agentController.chat);
+router.post("/chat", async (req: Request, res: Response) => {
+  const { message } = req.body as { message?: string };
 
-//   const agent = mastra.getAgent("weatherAgent");
+  if (!message) {
+    return res.status(400).send("Missing 'message' query parameter");
+  }
 
-//   try {
-//     const result = await agent.generate(`What's the weather like in ${city}?`);
-//     res.send(result.text);
-//   } catch (error) {
-//     console.error("Agent error:", error);
-//     res.status(500).send("An error occurred while processing your request");
-//   }
-// });
+  const agent = mastra.getAgent("weatherAgent");
+
+  try {
+    const result = await agent.generate(message);
+    res.send(result.text);
+  } catch (error) {
+    console.error("Agent error:", error);
+    res.status(500).send("An error occurred while processing your request");
+  }
+});
 
 // router.get("/ingestion", async (req: Request, res: Response) => {
 //   const filePath = join(__dirname, "../../documents/master-documents.md");
