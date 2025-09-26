@@ -2,9 +2,14 @@ import { Agent } from "@mastra/core";
 import { IStoreRepository } from "../repositories/IStore.repository";
 import { openai } from "@ai-sdk/openai";
 import { PGVECTOR_PROMPT } from "@mastra/pg";
+import { Memory } from "@mastra/memory";
 
 export class AgentService {
-  constructor(private storeRepository: IStoreRepository) {}
+  private memory: Memory;
+
+  constructor(private storeRepository: IStoreRepository) {
+    this.memory = storeRepository.initMemory();
+  }
 
   chatAgent(): Agent {
     return new Agent({
@@ -13,7 +18,7 @@ export class AgentService {
 			Process queries using the provided context. Structure responses to be concise and relevant.
 			${PGVECTOR_PROMPT}`,
       model: openai("gpt-4o-mini"),
-      memory: this.storeRepository.initMemory(),
+      memory: this.memory,
       // new Memory({
       //   storage: this.storeRepository.initPGStore(),
       //   vector: this.storeRepository.initVectorStore(),

@@ -33,6 +33,9 @@ class IngestionController {
   };
 }
 
+
+const storeRepo: IStoreRepository = StoreRepository.getInstance(DATABASE_URL);
+
 export const ingestionController = new IngestionController(
-  new IngestionService(new StoreRepository(DATABASE_URL) as IStoreRepository)
+  new IngestionService(storeRepo)
 );

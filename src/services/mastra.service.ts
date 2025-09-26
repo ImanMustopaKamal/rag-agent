@@ -7,12 +7,14 @@ export class MastraService {
   private mastra: Mastra;
 
   constructor() {
-    const repo = new StoreRepository(DATABASE_URL);
+    const repo = StoreRepository.getInstance(DATABASE_URL);
 
     this.mastra = new Mastra({
       agents: {
         chatAgent: new AgentService(repo).chatAgent(),
       },
+      // storage: repo.initPGStore(),
+      // vector: repo.initVectorStore(),
     });
   }
 

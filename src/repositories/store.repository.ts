@@ -4,18 +4,27 @@ import { IStoreRepository } from "./IStore.repository";
 import { createVectorQueryTool } from "@mastra/rag";
 import { openai } from "@ai-sdk/openai";
 import { Memory } from "@mastra/memory";
+import { logger } from "../configs/logger.config";
 
 export class StoreRepository implements IStoreRepository {
+  private static instance: StoreRepository;
   private vectorStore: PgVector;
   private pgStore: PostgresStore;
 
-  constructor(connectionString: string) {
+  private constructor(connectionString: string) {
     this.vectorStore = new PgVector({
       connectionString,
     });
     this.pgStore = new PostgresStore({
       connectionString,
     });
+  }
+
+  static getInstance(connectionString: string): IStoreRepository {
+    if (!StoreRepository.instance) {
+      StoreRepository.instance = new StoreRepository(connectionString);
+    }
+    return StoreRepository.instance;
   }
 
   async upsert(
@@ -44,11 +53,14 @@ export class StoreRepository implements IStoreRepository {
   }
 
   vectorQuery(indexName: string): ReturnType<typeof createVectorQueryTool> {
+    logger.info("Using vector store:", this.vectorStore, "index:", indexName);
     return createVectorQueryTool({
       vectorStoreName: "pgVector",
       vectorStore: this.vectorStore,
       indexName,
-      model: openai.embedding("text-embedding-3-small"),
+      model: openai.embedding("text-embedding-3-small", {
+        dimensions: 1536,
+      }),
     });
   }
 
@@ -56,7 +68,9 @@ export class StoreRepository implements IStoreRepository {
     return new Memory({
       storage: this.pgStore,
       vector: this.vectorStore,
-      embedder: openai.embedding("text-embedding-3-small"),
+      embedder: openai.embedding("text-embedding-3-small", {
+        dimensions: 1536,
+      }),
       options: {
         lastMessages: 5,
         semanticRecall: {

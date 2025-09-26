@@ -31,7 +31,9 @@ app.use(errorMiddleware);
 
 async function startServer(): Promise<void> {
   try {
-    const initDB = new DatabaseService(new StoreRepository(DATABASE_URL));
+    const initDB = new DatabaseService(
+      StoreRepository.getInstance(DATABASE_URL)
+    );
     if (initDB) {
       await initDB.initializeDatabase();
     }
