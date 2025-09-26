@@ -3,7 +3,7 @@ import {
   ALLOWED_FILE_EXTENSION,
   formatFileSize,
   MAX_FILE_SIZE,
-} from "../constants/file.constant";
+} from "../configs/file.config";
 
 export const fileSchema = z.object({
   originalname: z

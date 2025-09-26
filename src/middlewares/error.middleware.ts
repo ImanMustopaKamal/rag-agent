@@ -1,7 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { ZodError } from "zod";
 import { ResponseError } from "../errors/response.error";
-import { logger } from "../configs/logger.config";
 
 export const errorMiddleware = async (
   error: Error,
@@ -18,7 +17,6 @@ export const errorMiddleware = async (
       errors: error.message,
     });
   } else {
-    logger.error(error)
     res.status(500).json({
       errors: error.message,
     });

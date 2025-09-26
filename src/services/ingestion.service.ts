@@ -2,38 +2,36 @@ import { MDocument } from "@mastra/rag";
 import { openai } from "@ai-sdk/openai";
 import { embedMany } from "ai";
 import { ResponseError } from "../errors/response.error";
-import { IngestionRepository } from "../repositories/ingestion.repository";
 import { logger } from "../configs/logger.config";
+import { IStoreRepository } from "../repositories/IStore.repository";
 
 export class IngestionService {
-  constructor(private ingestionRepository: IngestionRepository) {}
+  constructor(private storeRepository: IStoreRepository) {}
 
   async store(payload: string): Promise<string[]> {
     try {
       const docs = MDocument.fromMarkdown(payload);
 
-      const chunks = await docs.chunk({
+      const chunks: Array<{ text: string }> = await docs.chunk({
         strategy: "markdown",
         headers: [
           ["#", "title"],
           ["##", "section"],
         ],
         extract: {
-          summary: true, // Extract summaries with default settings
-          keywords: true, // Extract keywords with default settings
+          summary: true,
+          keywords: true,
         },
       });
 
-      logger.info("chuks: ", JSON.stringify(chunks));
-
       const { embeddings } = await embedMany({
-        model: openai.embedding("text-embedding-3-small"),
+        model: openai.embedding("text-embedding-3-small", {
+          dimensions: 1536,
+        }),
         values: chunks.map((chunk) => chunk.text),
       });
 
-      logger.info("embeddings: ", JSON.stringify(embeddings));
-
-      const result = await this.ingestionRepository.upsert(
+      const result = await this.storeRepository.upsert(
         "documents",
         embeddings,
         chunks.map((chunk) => ({ text: chunk.text }))
@@ -46,5 +44,3 @@ export class IngestionService {
     }
   }
 }
-
-// export const ingestionService = new IngestionService();

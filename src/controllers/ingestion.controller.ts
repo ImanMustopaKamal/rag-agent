@@ -3,15 +3,12 @@ import { ResponseError } from "../errors/response.error";
 import { fileSchema } from "../validations/file.validation";
 import { logger } from "../configs/logger.config";
 import { IngestionService } from "../services/ingestion.service";
-import { IngestionRepository } from "../repositories/ingestion.repository";
 import { DATABASE_URL } from "../configs/database.config";
+import { StoreRepository } from "../repositories/store.repository";
+import { IStoreRepository } from "../repositories/IStore.repository";
 
 class IngestionController {
   constructor(private ingestionService: IngestionService) {}
-
-  get = async (req: Request, res: Response): Promise<void> => {
-    res.send("ok");
-  };
 
   store = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -28,7 +25,7 @@ class IngestionController {
 
       const result = await this.ingestionService.store(content);
 
-      res.status(200).json({ data: "ok" });
+      res.status(200).json({ data: result });
     } catch (error: any) {
       logger.error(error.message);
       throw new ResponseError(500, error.message);
@@ -37,5 +34,5 @@ class IngestionController {
 }
 
 export const ingestionController = new IngestionController(
-  new IngestionService(new IngestionRepository(DATABASE_URL))
+  new IngestionService(new StoreRepository(DATABASE_URL) as IStoreRepository)
 );

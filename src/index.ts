@@ -1,10 +1,13 @@
+// import "./instrumentation";
 import express from "express";
 import path from "path";
 import { config } from "dotenv";
 import apiRoutes from "./routes/api.route";
 import { errorMiddleware } from "./middlewares/error.middleware";
 import { logger } from "./configs/logger.config";
-import { initDatabase } from "./configs/database.config";
+import { DATABASE_URL } from "./configs/database.config";
+import { DatabaseService } from "./services/database.service";
+import { StoreRepository } from "./repositories/store.repository";
 
 config({ path: path.join(__dirname, "../.env") });
 
@@ -28,7 +31,10 @@ app.use(errorMiddleware);
 
 async function startServer(): Promise<void> {
   try {
-    await initDatabase();
+    const initDB = new DatabaseService(new StoreRepository(DATABASE_URL));
+    if (initDB) {
+      await initDB.initializeDatabase();
+    }
 
     app.listen(PORT, () => {
       logger.info(
