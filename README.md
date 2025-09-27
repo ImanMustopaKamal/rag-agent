@@ -101,7 +101,9 @@ http://localhost:3000/api-docs
 
   ```json
   {
-    "message": "Apa isi dari dokumen yang saya upload?"
+    "userId": "user-1",
+    "threadId": "thread-1",
+    "message": "pengajuan cuti?"
   }
   ```
 
@@ -109,7 +111,7 @@ http://localhost:3000/api-docs
 
   ```json
   {
-    "answer": "Dokumen menjelaskan tentang ..."
+    "response": "Berikut adalah informasi mengenai pengajuan cuti:\n\n1. **Cuti Tahunan**: Karyawan berhak atas 12 hari cuti tahunan berbayar per tahun. Permintaan cuti harus diajukan melalui sistem HRIS minimal 7 hari kerja sebelumnya. Cuti yang tidak digunakan tidak dapat diakumulasikan ke tahun berikutnya.\n\n2. **Cuti Sakit**: Karyawan berhak atas 5 hari cuti sakit berbayar per tahun tanpa perlu surat dokter. Untuk cuti sakit lebih dari 2 hari berturut-turut, surat keterangan dokter wajib dilampirkan.\n\n3. **Cuti Hamil dan Melahirkan**: Karyawati berhak atas 3 bulan cuti melahirkan berbayar sesuai dengan peraturan pemerintah.\n\n4. **Cuti Khusus**: Cuti untuk acara keluarga penting (misalnya, pernikahan, duka cita) akan dipertimbangkan secara kasus per kasus oleh manajemen."
   }
   ```
 
