@@ -6,34 +6,6 @@ import { IngestionService } from "../services/ingestion.service";
 import { DATABASE_URL } from "../configs/database.config";
 import { StoreRepository } from "../repositories/store.repository";
 import { IStoreRepository } from "../repositories/IStore.repository";
-
-/**
- * @swagger
- * /api/ingestion:
- *   post:
- *     summary: Upload file untuk di-ingest
- *     tags: [Ingestion]
- *     requestBody:
- *       required: true
- *       content:
- *         multipart/form-data:
- *           schema:
- *             type: object
- *             required:
- *               - file
- *             properties:
- *               file:
- *                 type: string
- *                 format: binary
- *     responses:
- *       200:
- *         description: File berhasil di-ingest
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/IngestionResponse'
- */
-
 class IngestionController {
   constructor(private ingestionService: IngestionService) {}
 

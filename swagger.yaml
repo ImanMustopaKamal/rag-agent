@@ -1,0 +1,79 @@
+openapi: 3.0.0
+info:
+  title: Mastra Agent API
+  version: 1.0.0
+  description: API untuk ingestion (upload dokumen) dan chat
+
+servers:
+  - url: http://localhost:3000/api
+
+paths:
+  /ingestion:
+    post:
+      summary: Upload document untuk ingestion
+      tags:
+        - Ingestion
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: File berhasil diunggah
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    example: [  "doc-123", "doc-456" ]
+        "400":
+          description: Request tidak valid
+
+  /chat:
+    post:
+      summary: Kirim pesan ke chat agent
+      tags:
+        - Chat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - message
+                - userId
+                - threadId
+              properties:
+                message:
+                  type: string
+                  example: "Halo, apa kabar?"
+                userId:
+                  type: string
+                  example: user-123
+                threadId:
+                  type: string
+                  example: thread-456
+      responses:
+        "200":
+          description: Chat response berhasil dibuat
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    example: "Saya baik, terima kasih!"
+        "400":
+          description: Request tidak valid
