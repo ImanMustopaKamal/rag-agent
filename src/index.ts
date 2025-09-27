@@ -8,6 +8,7 @@ import { logger } from "./configs/logger.config";
 import { DATABASE_URL } from "./configs/database.config";
 import { DatabaseService } from "./services/database.service";
 import { StoreRepository } from "./repositories/store.repository";
+import { setupSwagger } from "./configs/swagger.config";
 
 config({ path: path.join(__dirname, "../.env") });
 
@@ -16,6 +17,8 @@ const PORT = process.env.PORT;
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
+
+setupSwagger(app);
 
 app.use("/api", apiRoutes);
 

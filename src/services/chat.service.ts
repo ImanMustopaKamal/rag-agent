@@ -4,15 +4,13 @@ import { MastraService } from "./mastra.service";
 export class ChatService {
   constructor() {}
 
-  async sendMessage(message: string): Promise<string> {
+  async sendMessage(message: string, userId: string, threadId: string): Promise<string> {
     try {
-      const threadId = "123";
-      const resourceId = "user-456";
       const mastra = new MastraService();
       const result = await mastra
         .getAgent("chatAgent")
         .generate(message, {
-          memory: { thread: threadId, resource: resourceId },
+          memory: { thread: threadId, resource: userId },
         });
       return result.text;
     } catch (error: any) {
