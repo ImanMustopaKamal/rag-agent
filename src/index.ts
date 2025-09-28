@@ -10,7 +10,13 @@ import { DatabaseService } from "./services/database.service";
 import { StoreRepository } from "./repositories/store.repository";
 import { setupSwagger } from "./configs/swagger.config";
 
+declare global {
+  var ___MASTRA_TELEMETRY___: boolean | undefined;
+}
+
 config({ path: path.join(__dirname, "../.env") });
+
+globalThis.___MASTRA_TELEMETRY___ = true;
 
 const app = express();
 const PORT = process.env.PORT;
