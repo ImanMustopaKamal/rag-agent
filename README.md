@@ -85,7 +85,7 @@ http://localhost:3000/api-docs
   curl -X POST http://localhost:3000/api/ingestion      -F "file=@./documents/sample.pdf"
   ```
 
-  👉 Wajib dilakukan sebelum menggunakan API Chat.
+  👉 Wajib dilakukan sebelum menggunakan API Chat. Contoh file markdown yang dapat digunakan terdapat pada folder documents
 
 ---
 

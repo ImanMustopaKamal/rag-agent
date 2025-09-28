@@ -13,6 +13,9 @@ export class MastraService {
       agents: {
         chatAgent: new AgentService(repo).chatAgent(),
       },
+      // telemetry: {
+      //   enabled: true,
+      // },
       // storage: repo.initPGStore(),
       // vector: repo.initVectorStore(),
     });
