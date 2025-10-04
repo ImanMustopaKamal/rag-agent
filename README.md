@@ -12,6 +12,8 @@ Sebelum menjalankan proyek, pastikan sudah menginstal:
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/)
 
+> Pastikan docker berjalan 
+
 ---
 
 ## Instalasi & Menjalankan
@@ -22,6 +24,7 @@ Sebelum menjalankan proyek, pastikan sudah menginstal:
 git clone https://github.com/ImanMustopaKamal/rag-agent.git
 cd rag-agent
 ```
+> Pastikan code up to date gunakan ```git pull```
 
 ### 2. Konfigurasi Environment
 
