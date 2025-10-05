@@ -3,7 +3,8 @@ FROM node:20-slim
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci
+# RUN npm ci
+RUN npm ci --legacy-peer-deps
 
 COPY . .
 
