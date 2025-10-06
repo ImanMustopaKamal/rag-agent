@@ -31,10 +31,16 @@ cd rag-agent
 Buat file `.env` di root project berdasarkan file `.env.template`
 
 > Pastikan `OPENAI_API_KEY` diisi dengan API key yang valid.
+> Pastikan `DB_PASSWORD` diisi dengan Password yang valid
 
 ---
 
 ### 3. Menjalankan Aplikasi
+
+**Reset container & volume (optional)**
+```bash
+docker-compose down -v
+```
 
 1. **Build & Run container**
 

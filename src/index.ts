@@ -2,6 +2,9 @@
 import express from "express";
 import path from "path";
 import { config } from "dotenv";
+
+config({ path: path.join(__dirname, "../.env") });
+
 import apiRoutes from "./routes/api.route";
 import { errorMiddleware } from "./middlewares/error.middleware";
 import { logger } from "./configs/logger.config";
@@ -13,8 +16,6 @@ import { setupSwagger } from "./configs/swagger.config";
 declare global {
   var ___MASTRA_TELEMETRY___: boolean | undefined;
 }
-
-config({ path: path.join(__dirname, "../.env") });
 
 globalThis.___MASTRA_TELEMETRY___ = true;
 
